@@ -1,0 +1,380 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.com/aquarium#"
+     xml:base="http://example.com/aquarium"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <owl:Ontology rdf:about="http://example.com/aquarium"/>
+    
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#eats">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#hasAggressionLevel">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#AggressionLevel"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#hasWaterType">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#WaterType"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#incompatibleWith">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Fish"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#isCompatibleWith">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Fish"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#preferredTemperature">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#WaterTemperature"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#sometimesCompatibleWith">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Fish"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#suitablePlantsForTankSize">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#suitableWithPlant">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://example.com/aquarium#suitedForTankSize">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#Fish"/>
+        <rdfs:range rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+    </owl:ObjectProperty>
+    
+    <owl:DatatypeProperty rdf:about="http://example.com/aquarium#plantAmount">
+        <rdfs:domain rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+    <owl:Class rdf:about="http://example.com/aquarium#AggressionLevel"/>
+    <owl:Class rdf:about="http://example.com/aquarium#AquariumType"/>
+    <owl:Class rdf:about="http://example.com/aquarium#Fish"/>
+    <owl:Class rdf:about="http://example.com/aquarium#Food"/>
+    <owl:Class rdf:about="http://example.com/aquarium#Plant"/>
+    <owl:Class rdf:about="http://example.com/aquarium#TankSizeRange"/>
+    <owl:Class rdf:about="http://example.com/aquarium#WaterTemperature"/>
+    <owl:Class rdf:about="http://example.com/aquarium#WaterType"/>
+    
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Aggressive">
+        <rdf:type rdf:resource="http://example.com/aquarium#AggressionLevel"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Peaceful">
+        <rdf:type rdf:resource="http://example.com/aquarium#AggressionLevel"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#SemiAggressive">
+        <rdf:type rdf:resource="http://example.com/aquarium#AggressionLevel"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Algae">
+        <rdf:type rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#FlakeFood">
+        <rdf:type rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#LiveFood">
+        <rdf:type rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Pellets">
+        <rdf:type rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Vegetables">
+        <rdf:type rdf:resource="http://example.com/aquarium#Food"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Below20L">
+        <rdf:type rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <plantAmount>1-2 small plants</plantAmount>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#JavaFern"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#L20to50">
+        <rdf:type rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <plantAmount>3-5 medium plants</plantAmount>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#Anubias"/>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#JavaFern"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#L50to100">
+        <rdf:type rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <plantAmount>6-10 large plants</plantAmount>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#AmazonSword"/>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#Hornwort"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Over100L">
+        <rdf:type rdf:resource="http://example.com/aquarium#TankSizeRange"/>
+        <plantAmount>10+ large plants</plantAmount>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#AmazonSword"/>
+        <suitablePlantsForTankSize rdf:resource="http://example.com/aquarium#Hornwort"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Cold">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterTemperature"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Temperate">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterTemperature"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Warm">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterTemperature"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Brackish">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterType"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Freshwater">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterType"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Saltwater">
+        <rdf:type rdf:resource="http://example.com/aquarium#WaterType"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#AmazonSword">
+        <rdf:type rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Anubias">
+        <rdf:type rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Hornwort">
+        <rdf:type rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#JavaFern">
+        <rdf:type rdf:resource="http://example.com/aquarium#Plant"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Guppy">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <eats rdf:resource="http://example.com/aquarium#LiveFood"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Below20L"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L50to100"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Betta"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#CherryBarb"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#AfricanCichlid"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Oscar"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Shark"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Molly">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <eats rdf:resource="http://example.com/aquarium#Algae"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L50to100"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Betta"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#CherryBarb"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Platy">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <eats rdf:resource="http://example.com/aquarium#Vegetables"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Below20L"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Betta"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Betta">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#Pellets"/>
+        <eats rdf:resource="http://example.com/aquarium#LiveFood"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#SemiAggressive"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Below20L"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/> <incompatibleWith rdf:resource="http://example.com/aquarium#Oscar"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#NeonTetra">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Angelfish">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <eats rdf:resource="http://example.com/aquarium#Pellets"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#SemiAggressive"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L50to100"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Over100L"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Betta"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#CherryBarb">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L50to100"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#CorydorasCatfish">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#Pellets"/>
+        <eats rdf:resource="http://example.com/aquarium#Vegetables"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#CommonPleco">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#Algae"/>
+        <eats rdf:resource="http://example.com/aquarium#Vegetables"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Over100L"/> <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Betta"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CherryBarb"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#ZebraDanio"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#AfricanCichlid"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#ZebraDanio">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Temperate"/> <suitedForTankSize rdf:resource="http://example.com/aquarium#L20to50"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#Platy"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#NeonTetra"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CorydorasCatfish"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CommonPleco"/>
+        <isCompatibleWith rdf:resource="http://example.com/aquarium#CherryBarb"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Angelfish"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#AfricanCichlid">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Aggressive"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Over100L"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <eats rdf:resource="http://example.com/aquarium#Pellets"/>
+        <eats rdf:resource="http://example.com/aquarium#LiveFood"/>
+    </owl:NamedIndividual>
+    
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Oscar">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Aggressive"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Over100L"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+        <eats rdf:resource="http://example.com/aquarium#Pellets"/>
+        <eats rdf:resource="http://example.com/aquarium#LiveFood"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Shark">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Aggressive"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/> 
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/> 
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#Over100L"/>
+        <incompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <eats rdf:resource="http://example.com/aquarium#LiveFood"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="http://example.com/aquarium#Gourami">
+        <rdf:type rdf:resource="http://example.com/aquarium#Fish"/>
+        <hasAggressionLevel rdf:resource="http://example.com/aquarium#Peaceful"/>
+        <hasWaterType rdf:resource="http://example.com/aquarium#Freshwater"/>
+        <preferredTemperature rdf:resource="http://example.com/aquarium#Warm"/>
+        <suitedForTankSize rdf:resource="http://example.com/aquarium#L50to100"/>
+        <eats rdf:resource="http://example.com/aquarium#FlakeFood"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Guppy"/>
+        <sometimesCompatibleWith rdf:resource="http://example.com/aquarium#Molly"/>
+    </owl:NamedIndividual>
+
+</rdf:RDF>
