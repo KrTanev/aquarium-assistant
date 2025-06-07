@@ -44,17 +44,16 @@ public class AquariumAdviserAgent extends Agent {
         System.out.println("AquariumAdviserAgent " + getAID().getName() + " is starting.");
         gui = new AquariumClientGUI(this);
         mapper = new ObjectMapper();
-        ontology = new AquariumOntology();
 
         addBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                // Fetch data from ontology to populate GUI dropdowns
                 Map<String, List<String>> ontologyData = new HashMap<>();
                 ontologyData.put("tankSizes", ontology.getAllTankSizeRanges());
                 ontologyData.put("waterTypes", ontology.getAllWaterTypes());
                 ontologyData.put("temperatures", ontology.getAllWaterTemperatures());
                 ontologyData.put("aggressionLevels", ontology.getAllAggressionLevels());
+                ontologyData.put("fishNames", ontology.getAllFishNames());
                 gui.populateDropdowns(ontologyData);
             }
         });
@@ -66,6 +65,13 @@ public class AquariumAdviserAgent extends Agent {
             gui.dispose();
         }
         System.out.println("AquariumAdviserAgent " + getAID().getName() + " is terminating.");
+        try {
+            DFAgentDescription dfd = new DFAgentDescription();
+            dfd.setName(getAID());
+            DFService.deregister(this, dfd);
+        } catch (FIPAException e) {
+            System.err.println("Error deregistering agent: " + e.getMessage());
+        }
     }
 
     /**

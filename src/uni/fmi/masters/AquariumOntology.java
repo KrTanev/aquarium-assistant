@@ -188,6 +188,23 @@ public class AquariumOntology {
         }
 
         /**
+         * Retrieves a list of all fish names (individuals) from the ontology.
+         *
+         * @return A List of Strings, each being the friendly name of a fish individual.
+         */
+        public List<String> getAllFishNames() {
+                OWLClass fishClass = dataFactory.getOWLClass(IRI.create(ontologyIRIStr + "Fish"));
+                return aquariumOntology.getIndividualsInSignature().stream()
+                                .filter(ind -> aquariumOntology.getAxioms(AxiomType.CLASS_ASSERTION)
+                                                .stream()
+                                                .anyMatch(ca -> ca.getIndividual().equals(ind)
+                                                                && ca.getClassExpression().equals(fishClass)))
+                                .map(this::getFriendlyName)
+                                .sorted() // Sort alphabetically for a nicer dropdown
+                                .collect(Collectors.toList());
+        }
+
+        /**
          * Helper method to get explicitly asserted object property values for a given
          * individual and property.
          * This replaces the incorrect `aquariumOntology.getObjectPropertyValues()`

@@ -1,4 +1,4 @@
-package uni.fmi.masters.gui; // New package
+package uni.fmi.masters.gui;
 
 import uni.fmi.masters.agent.AquariumAdviserAgent;
 import uni.fmi.masters.model.Fish;
@@ -8,12 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class AdviserPanel extends JPanel { // Extends JPanel
+public class AdviserPanel extends JPanel {
 
     private AquariumAdviserAgent agent;
 
@@ -25,16 +24,22 @@ public class AdviserPanel extends JPanel { // Extends JPanel
     private JCheckBox showAdvancedOptionsCheckBox;
     private JPanel advancedOptionsPanel;
     private JSpinner numFishKindsSpinner;
-    private JTextField alreadyHaveFishTextField;
+
+    private JComboBox<String> availableFishDropdown;
+    private JButton addExistingFishButton;
+    private JList<String> alreadyHaveFishList;
+    private DefaultListModel<String> alreadyHaveFishListModel;
+    private JButton removeSelectedFishButton;
+
     private JTextArea recommendationsTextArea;
 
     public AdviserPanel(AquariumAdviserAgent agent) {
         this.agent = agent;
-        initAdviserPanelUI(); // Renamed from initUI to be specific
+        initAdviserPanelUI();
     }
 
     private void initAdviserPanelUI() {
-        setLayout(new BorderLayout(10, 10)); // Set layout for this panel directly
+        setLayout(new BorderLayout(10, 10));
 
         // ! --- Input Panel (Basic) ---
         JPanel basicInputPanel = new JPanel(new GridLayout(4, 2, 5, 5));
@@ -61,32 +66,81 @@ public class AdviserPanel extends JPanel { // Extends JPanel
                 "tankSizes", List.of("Loading..."),
                 "waterTypes", List.of("Loading..."),
                 "temperatures", List.of("Loading..."),
-                "aggressionLevels", List.of("Loading...")));
+                "aggressionLevels", List.of("Loading..."),
+                "fishNames", List.of("Loading...")));
 
-        add(basicInputPanel, BorderLayout.NORTH); // Add to this panel
+        add(basicInputPanel, BorderLayout.NORTH);
 
         // ! --- Advanced Options Panel ---
-        advancedOptionsPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+        advancedOptionsPanel = new JPanel(new GridBagLayout());
         advancedOptionsPanel.setBorder(BorderFactory.createTitledBorder("Advanced Options"));
 
-        advancedOptionsPanel.add(new JLabel("Desired Fish Kinds:"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        advancedOptionsPanel.add(new JLabel("Desired Fish Kinds:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
         numFishKindsSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
-        advancedOptionsPanel.add(numFishKindsSpinner);
+        advancedOptionsPanel.add(numFishKindsSpinner, gbc);
 
-        advancedOptionsPanel.add(new JLabel("Already Have Fish (comma-separated):"));
-        alreadyHaveFishTextField = new JTextField();
-        alreadyHaveFishTextField.setToolTipText("e.g., Guppy, Molly");
-        advancedOptionsPanel.add(alreadyHaveFishTextField);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 0;
+        advancedOptionsPanel.add(new JLabel("Already Have Fish:"), gbc);
 
-        advancedOptionsPanel.setVisible(false); // Hidden by default
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        availableFishDropdown = new JComboBox<>();
+        availableFishDropdown.setToolTipText("Select fish you already own from the list");
+        advancedOptionsPanel.add(availableFishDropdown, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        addExistingFishButton = new JButton("Add Fish");
+        addExistingFishButton.addActionListener(e -> addSelectedFish());
+        advancedOptionsPanel.add(addExistingFishButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+        alreadyHaveFishListModel = new DefaultListModel<>();
+        alreadyHaveFishList = new JList<>(alreadyHaveFishListModel);
+        alreadyHaveFishList.setVisibleRowCount(2);
+        alreadyHaveFishList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // Allow multi-select for
+                                                                                              // removal
+        JScrollPane alreadyHaveFishScrollPane = new JScrollPane(alreadyHaveFishList);
+        alreadyHaveFishScrollPane.setPreferredSize(new Dimension(200, 80)); // Provide a preferred size
+        advancedOptionsPanel.add(alreadyHaveFishScrollPane, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weighty = 0;
+        removeSelectedFishButton = new JButton("Remove Selected Fish");
+        removeSelectedFishButton.addActionListener(e -> removeSelectedFish());
+        advancedOptionsPanel.add(removeSelectedFishButton, gbc);
+
+        advancedOptionsPanel.setVisible(false);
 
         JPanel controlsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
         showAdvancedOptionsCheckBox = new JCheckBox("Show Advanced Options");
         showAdvancedOptionsCheckBox.addActionListener(e -> {
             advancedOptionsPanel.setVisible(showAdvancedOptionsCheckBox.isSelected());
-            // Important: We need to tell the parent frame to re-pack
-            // if we change visibility within a sub-panel.
             SwingUtilities.getWindowAncestor(this).pack();
         });
         controlsPanel.add(showAdvancedOptionsCheckBox);
@@ -113,7 +167,7 @@ public class AdviserPanel extends JPanel { // Extends JPanel
         centerPanel.add(controlsPanel, BorderLayout.NORTH);
         centerPanel.add(advancedOptionsPanel, BorderLayout.CENTER);
 
-        add(centerPanel, BorderLayout.CENTER); // Add to this panel
+        add(centerPanel, BorderLayout.CENTER);
 
         // ! --- Output Panel ---
         JPanel outputPanel = new JPanel(new BorderLayout());
@@ -126,7 +180,30 @@ public class AdviserPanel extends JPanel { // Extends JPanel
         JScrollPane scrollPane = new JScrollPane(recommendationsTextArea);
         outputPanel.add(scrollPane, BorderLayout.CENTER);
 
-        add(outputPanel, BorderLayout.SOUTH); // Add to this panel
+        add(outputPanel, BorderLayout.SOUTH);
+    }
+
+    private void addSelectedFish() {
+        String selectedFish = (String) availableFishDropdown.getSelectedItem();
+        if (selectedFish != null && !selectedFish.isEmpty() && !selectedFish.equals("Loading...")
+                && !alreadyHaveFishListModel.contains(selectedFish)) {
+            alreadyHaveFishListModel.addElement(selectedFish);
+        } else if (selectedFish != null && alreadyHaveFishListModel.contains(selectedFish)) {
+            JOptionPane.showMessageDialog(this, selectedFish + " is already in your 'already have' list.",
+                    "Duplicate Fish", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void removeSelectedFish() {
+        List<String> selectedItems = alreadyHaveFishList.getSelectedValuesList();
+        if (!selectedItems.isEmpty()) {
+            for (String item : selectedItems) {
+                alreadyHaveFishListModel.removeElement(item);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select fish from the list to remove.", "No Selection",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     private void requestRecommendations() {
@@ -142,12 +219,9 @@ public class AdviserPanel extends JPanel { // Extends JPanel
 
         if (showAdvancedOptionsCheckBox.isSelected()) {
             numFishKinds = (Integer) numFishKindsSpinner.getValue();
-            String alreadyHaveFishText = alreadyHaveFishTextField.getText().trim();
-            if (!alreadyHaveFishText.isEmpty()) {
-                alreadyHaveFish = Arrays.stream(alreadyHaveFishText.split(","))
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .collect(Collectors.toList());
+            alreadyHaveFish = new ArrayList<>();
+            for (int i = 0; i < alreadyHaveFishListModel.getSize(); i++) {
+                alreadyHaveFish.add(alreadyHaveFishListModel.getElementAt(i));
             }
         }
 
@@ -197,10 +271,9 @@ public class AdviserPanel extends JPanel { // Extends JPanel
         showAdvancedOptionsCheckBox.setSelected(false);
         advancedOptionsPanel.setVisible(false);
         numFishKindsSpinner.setValue(1);
-        alreadyHaveFishTextField.setText("");
+        alreadyHaveFishListModel.clear();
 
         recommendationsTextArea.setText("");
-        // Important: Re-pack the parent frame
         SwingUtilities.getWindowAncestor(this).pack();
     }
 
@@ -241,6 +314,9 @@ public class AdviserPanel extends JPanel { // Extends JPanel
                     && ontologyData.getOrDefault("aggressionLevels", List.of()).contains(currentAggression)) {
                 aggressionLevelComboBox.setSelectedItem(currentAggression);
             }
+
+            availableFishDropdown.removeAllItems();
+            ontologyData.getOrDefault("fishNames", List.of()).forEach(availableFishDropdown::addItem);
         });
     }
 

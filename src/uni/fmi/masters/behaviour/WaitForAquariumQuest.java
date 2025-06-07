@@ -10,10 +10,10 @@ import uni.fmi.masters.model.Fish;
 import uni.fmi.masters.model.Plant;
 import uni.fmi.masters.AquariumOntology;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class WaitForAquariumQuest extends CyclicBehaviour {
 
@@ -63,23 +63,23 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                         aggressionLevel);
 
                 if (alreadyHaveFish != null && !alreadyHaveFish.isEmpty()) {
-                    List<Fish> compatibleNewFish = new ArrayList<>();
+                    suitableFish = suitableFish.stream()
+                            .filter(potentialNewFish -> {
+                                for (String existingFishName : alreadyHaveFish) {
+                                    String compatibility = ontology.checkFishCompatibility(potentialNewFish.getName(),
+                                            existingFishName);
 
-                    for (Fish potentialNewFish : suitableFish) {
-                        boolean allCompatible = true;
-                        for (String existingFishName : alreadyHaveFish) {
-                            String compatibility = ontology.checkFishCompatibility(potentialNewFish.getName(),
-                                    existingFishName);
-                            if (compatibility.equals("Incompatible")) {
-                                allCompatible = false;
-                                break;
-                            }
-                        }
-                        if (allCompatible) {
-                            compatibleNewFish.add(potentialNewFish);
-                        }
-                    }
-                    suitableFish = compatibleNewFish;
+                                    if (compatibility.equals("Incompatible")) {
+                                        return false;
+                                    } else if (compatibility.equals("Unknown")) {
+                                        return false;
+                                    }
+                                }
+
+                                return true;
+                            })
+                            .collect(Collectors.toList());
+
                 }
 
                 List<Plant> suitablePlants = ontology.getSuitablePlantsForTankSize(tankSize);
@@ -87,7 +87,6 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                 Map<String, Object> recommendations = new HashMap<>();
                 recommendations.put("fish", suitableFish);
                 recommendations.put("plants", suitablePlants);
-                recommendations.put("alreadyHaveFish", alreadyHaveFish);
 
                 if (!suitableFish.isEmpty() || !suitablePlants.isEmpty()) {
                     System.out.println("AquariumExpertAgent found recommendations.");
@@ -97,7 +96,8 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                 } else {
                     System.out.println("AquariumExpertAgent found no recommendations for the given criteria.");
                     reply.setPerformative(ACLMessage.INFORM_REF);
-                    reply.setContent("No suitable fish or plants found for your criteria given your preferences.");
+                    reply.setContent(
+                            "No suitable fish or plants found for your criteria given your preferences (including compatibility with existing fish).");
                     reply.setLanguage("JSON");
                 }
 
