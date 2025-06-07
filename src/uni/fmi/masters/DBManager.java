@@ -21,7 +21,8 @@ public class DBManager {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "username TEXT NOT NULL UNIQUE," +
                     "email TEXT NOT NULL UNIQUE," +
-                    "password_hash TEXT NOT NULL" +
+                    "password_hash TEXT NOT NULL," +
+                    "salt TEXT NOT NULL" +
                     ");";
             stmt.execute(createUsersTableSQL);
 
@@ -33,7 +34,6 @@ public class DBManager {
                     "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ");";
             stmt.execute(createSearchHistoryTableSQL);
-            System.out.println("Table 'search_history' checked/created.");
 
         } catch (SQLException e) {
             System.err.println("Error initializing database: " + e.getMessage());
