@@ -111,6 +111,7 @@ public class AquariumAdviserAgent extends Agent {
 
                 try {
                     DFAgentDescription[] result = DFService.search(myAgent, template);
+                    expertAgents.clear();
                     for (DFAgentDescription description : result) {
                         expertAgents.add(description.getName());
                     }
@@ -118,6 +119,7 @@ public class AquariumAdviserAgent extends Agent {
                     if (expertAgents.isEmpty()) {
                         System.out.println("No AquariumExpertAgent found. Please ensure it's running.");
                         gui.displayErrorMessage("No AquariumExpertAgent found. Please start it.");
+
                     } else {
                         System.out.println("Found " + expertAgents.size() + " AquariumExpertAgent(s).");
                     }
@@ -159,21 +161,22 @@ public class AquariumAdviserAgent extends Agent {
                     cfp.setContent(jsonContent);
                     cfp.setLanguage("JSON");
                     cfp.setConversationId("aquarium-recommendation");
-                    cfp.setReplyWith("cfp" + System.currentTimeMillis());
+                    String replyWithId = "cfp" + System.currentTimeMillis();
+                    cfp.setReplyWith(replyWithId);
 
                     myAgent.send(cfp);
                     System.out.println("Sent CFP to expert agent(s) with: " + jsonContent);
 
                     MessageTemplate mt = MessageTemplate.and(
                             MessageTemplate.MatchConversationId("aquarium-recommendation"),
-                            MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
+                            MessageTemplate.MatchInReplyTo(replyWithId));
 
                     ACLMessage reply = myAgent.blockingReceive(mt, 10000);
 
                     if (reply != null) {
                         handleReply(reply);
                     } else {
-                        System.out.println("Timeout: No reply from expert agent.");
+                        System.out.println("Timeout: No reply from expert agent within 10 seconds.");
                         gui.displayErrorMessage(
                                 "No response from expert agent within 10 seconds. Check expert agent logs.");
                     }
@@ -195,33 +198,43 @@ public class AquariumAdviserAgent extends Agent {
                 };
                 Map<String, Object> recommendationMap = mapper.readValue(reply.getContent(), typeRef);
 
-                List<Fish> recommendedFish = mapper.convertValue(
-                        recommendationMap.get("fish"),
-                        new TypeReference<List<Fish>>() {
-                        });
+                List<Fish> recommendedFish = new ArrayList<>();
+                List<Plant> recommendedPlants = new ArrayList<>();
 
-                List<Plant> recommendedPlants = mapper.convertValue(
-                        recommendationMap.get("plants"),
-                        new TypeReference<List<Plant>>() {
-                        });
+                Object fishData = recommendationMap.get("fish");
+                if (fishData != null) {
+                    recommendedFish = mapper.convertValue(
+                            fishData,
+                            new TypeReference<List<Fish>>() {
+                            });
+                }
+
+                Object plantData = recommendationMap.get("plants");
+                if (plantData != null) {
+                    recommendedPlants = mapper.convertValue(
+                            plantData,
+                            new TypeReference<List<Plant>>() {
+                            });
+                }
 
                 gui.displayRecommendations(recommendedFish, recommendedPlants);
-                System.out.println("Recommendations received and displayed.");
 
             } catch (IOException e) {
-                System.err.println("Error parsing JSON recommendation: " + e.getMessage());
                 e.printStackTrace();
                 gui.displayErrorMessage(
                         "Failed to parse recommendations: " + e.getMessage() + ". Check expert agent's reply format.");
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                gui.displayErrorMessage(
+                        "Failed to convert recommendation data: " + e.getMessage() + ". Data format mismatch.");
             }
         } else if (reply.getPerformative() == ACLMessage.INFORM_REF) {
-            System.out.println("Expert Agent reported: " + reply.getContent());
             gui.displayErrorMessage("No recommendations: " + reply.getContent());
+        } else if (reply.getPerformative() == ACLMessage.REFUSE) {
+            gui.displayErrorMessage("Expert Agent refused request: " + reply.getContent());
         } else {
-            System.out.println(
-                    "Received unexpected message performative: " + ACLMessage.getPerformative(reply.getPerformative()));
             gui.displayErrorMessage("Unexpected response from expert agent (Performative: "
-                    + ACLMessage.getPerformative(reply.getPerformative()) + ").");
+                    + ACLMessage.getPerformative(reply.getPerformative()) + "). Content: " + reply.getContent());
         }
     }
 }
