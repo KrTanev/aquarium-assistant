@@ -13,10 +13,10 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import uni.fmi.masters.AquariumClientGUI;
 import uni.fmi.masters.model.Fish;
 import uni.fmi.masters.model.Plant;
 import uni.fmi.masters.AquariumOntology;
+import uni.fmi.masters.gui.AquariumClientGUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +30,14 @@ public class AquariumAdviserAgent extends Agent {
     private List<AID> expertAgents;
     private ObjectMapper mapper;
     private AquariumOntology ontology;
+
+    public AquariumAdviserAgent() {
+        this.ontology = new AquariumOntology();
+    }
+
+    public AquariumOntology getOntology() {
+        return ontology;
+    }
 
     @Override
     protected void setup() {
