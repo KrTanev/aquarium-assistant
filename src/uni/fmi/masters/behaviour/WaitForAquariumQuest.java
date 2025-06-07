@@ -37,6 +37,8 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
             ACLMessage reply = msg.createReply();
 
             try {
+                ontology.reloadOntology();
+
                 Map<String, Object> requestParams = mapper.readValue(requestContent,
                         new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
                         });
@@ -46,7 +48,6 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                 String preferredTemperature = (String) requestParams.get("preferredTemperature");
                 String aggressionLevel = (String) requestParams.get("aggressionLevel");
 
-                // New advanced parameters
                 Integer numFishKinds = (Integer) requestParams.get("numFishKinds");
                 List<String> alreadyHaveFish = (List<String>) requestParams.get("alreadyHaveFish");
 
@@ -58,7 +59,8 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                                         ? ", Existing=" + String.join(", ", alreadyHaveFish)
                                         : ""));
 
-                List<Fish> suitableFish = ontology.getSuitableFish(tankSize, waterType, preferredTemperature);
+                List<Fish> suitableFish = ontology.getSuitableFish(tankSize, waterType, preferredTemperature,
+                        aggressionLevel);
 
                 if (alreadyHaveFish != null && !alreadyHaveFish.isEmpty()) {
                     List<Fish> compatibleNewFish = new ArrayList<>();
@@ -72,7 +74,6 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                                 allCompatible = false;
                                 break;
                             }
-
                         }
                         if (allCompatible) {
                             compatibleNewFish.add(potentialNewFish);
@@ -81,7 +82,6 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                     suitableFish = compatibleNewFish;
                 }
 
-                // Plants are still only based on tank size
                 List<Plant> suitablePlants = ontology.getSuitablePlantsForTankSize(tankSize);
 
                 Map<String, Object> recommendations = new HashMap<>();
@@ -98,17 +98,20 @@ public class WaitForAquariumQuest extends CyclicBehaviour {
                     System.out.println("AquariumExpertAgent found no recommendations for the given criteria.");
                     reply.setPerformative(ACLMessage.INFORM_REF);
                     reply.setContent("No suitable fish or plants found for your criteria given your preferences.");
+                    reply.setLanguage("JSON");
                 }
 
             } catch (JsonProcessingException e) {
                 System.err.println("Error processing JSON request: " + e.getMessage());
-                reply.setPerformative(ACLMessage.INFORM_REF);
-                reply.setContent("Invalid request format.");
+                reply.setPerformative(ACLMessage.FAILURE);
+                reply.setContent("Invalid request format received by expert agent.");
+                reply.setLanguage("JSON");
             } catch (Exception e) {
                 System.err.println("An unexpected error occurred in AquariumExpertAgent: " + e.getMessage());
                 e.printStackTrace();
-                reply.setPerformative(ACLMessage.INFORM_REF);
+                reply.setPerformative(ACLMessage.FAILURE);
                 reply.setContent("An internal error occurred while processing your request.");
+                reply.setLanguage("JSON");
             } finally {
                 myAgent.send(reply);
             }

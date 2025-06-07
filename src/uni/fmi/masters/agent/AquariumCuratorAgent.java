@@ -87,6 +87,8 @@ public class AquariumCuratorAgent extends Agent {
 
                     ontology.saveOntology();
 
+                    ontology.reloadOntology();
+
                     sendReply(msg, ACLMessage.CONFIRM, "Fish added and properties set: " + name);
                 } else {
                     sendReply(msg, ACLMessage.FAILURE, "Fish already exists or invalid.");
