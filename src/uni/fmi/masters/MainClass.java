@@ -11,11 +11,6 @@ import uni.fmi.masters.agent.AquariumExpertAgent;
 import uni.fmi.masters.agent.AquariumAdviserAgent;
 import uni.fmi.masters.agent.AquariumCuratorAgent;
 
-//TODO: Recomendet amount of fish for this filter
-//TODO: To be able to choose from the options defined in the ontology
-//TODO: Extend ontology with more food, plants, aquarium types
-//TODO: Think how to extend the GUI and make it more complex
-
 public class MainClass {
 
     public static void main(String[] args) {
@@ -26,7 +21,7 @@ public class MainClass {
 
         profile.setParameter(profile.MAIN_HOST, "localhost");
         profile.setParameter(profile.MAIN_PORT, "9898");
-        profile.setParameter(profile.GUI, "true"); // This will launch the JADE management GUI (RMA)
+        profile.setParameter(profile.GUI, "true");
 
         AgentContainer mainContainer = runtime.createMainContainer(profile);
 
